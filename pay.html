@@ -31,10 +31,9 @@
             margin-bottom: 24px;
         }
 
-        .logo h1 {
-            font-size: 22px;
-            color: #1a1a2e;
-            margin-bottom: 4px;
+        .logo img {
+            height: 48px;
+            margin-bottom: 8px;
         }
 
         .logo p {
@@ -60,26 +59,31 @@
             margin-bottom: 6px;
         }
 
-        .field-value {
-            font-size: 16px;
-            color: #1a1a2e;
-            font-weight: 500;
-        }
-
-        .iban-row {
+        .copyable-row {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .iban-value {
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 15px;
+        .copyable-value {
+            font-size: 16px;
             color: #1a1a2e;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            font-weight: 500;
             flex: 1;
             word-break: break-all;
+        }
+
+        .copyable-value.mono {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .field-value {
+            font-size: 16px;
+            color: #1a1a2e;
+            font-weight: 500;
         }
 
         .copy-btn {
@@ -166,7 +170,7 @@
 <body>
     <div class="card">
         <div class="logo">
-            <h1>შპს ეიდი ტეკი</h1>
+            <img src="logo horiz.png" alt="AD tec">
             <p>გადახდის რეკვიზიტები</p>
         </div>
 
@@ -174,14 +178,17 @@
 
         <div class="field">
             <div class="field-label">ბენეფიციარი</div>
-            <div class="field-value">შპს ეიდი ტეკი</div>
+            <div class="copyable-row">
+                <span class="copyable-value" data-copy="შპს ეიდი ტეკი">შპს ეიდი ტეკი</span>
+                <button class="copy-btn" onclick="copyText(this)">კოპირება</button>
+            </div>
         </div>
 
         <div class="field">
             <div class="field-label">IBAN</div>
-            <div class="iban-row">
-                <span class="iban-value" id="iban">GE56BG0000000101477225</span>
-                <button class="copy-btn" id="copyBtn" onclick="copyIBAN()">კოპირება</button>
+            <div class="copyable-row">
+                <span class="copyable-value mono" data-copy="GE56BG0000000101477225">GE56BG0000000101477225</span>
+                <button class="copy-btn" onclick="copyText(this)">კოპირება</button>
             </div>
         </div>
 
@@ -192,7 +199,10 @@
 
         <div class="field">
             <div class="field-label">დანიშნულება</div>
-            <div class="field-value">საქონლის საფასური</div>
+            <div class="copyable-row">
+                <span class="copyable-value" data-copy="საქონლის საფასური">საქონლის საფასური</span>
+                <button class="copy-btn" onclick="copyText(this)">კოპირება</button>
+            </div>
         </div>
 
         <div class="amount-note">
@@ -203,48 +213,46 @@
             <div class="steps-title">როგორ გადაიხადოთ:</div>
             <div class="step">
                 <span class="step-num">1</span>
-                <span>დააჭირეთ „კოპირება" ღილაკს IBAN-ის დასაკოპირებლად</span>
-            </div>
-            <div class="step">
-                <span class="step-num">2</span>
                 <span>გახსენით თქვენი საბანკო აპლიკაცია (BOG ან TBC)</span>
             </div>
             <div class="step">
+                <span class="step-num">2</span>
+                <span>აირჩიეთ „გადარიცხვა" და თითოეული ველი შეავსეთ „კოპირება" ღილაკის დახმარებით</span>
+            </div>
+            <div class="step">
                 <span class="step-num">3</span>
-                <span>აირჩიეთ „გადარიცხვა", ჩასვით IBAN და მიუთითეთ თანხა</span>
+                <span>მიუთითეთ თანხა და დაადასტურეთ გადარიცხვა</span>
             </div>
         </div>
     </div>
 
     <script>
-        function copyIBAN() {
-            const iban = document.getElementById('iban').textContent;
-            const btn = document.getElementById('copyBtn');
+        function copyText(btn) {
+            var value = btn.parentElement.querySelector('.copyable-value').getAttribute('data-copy');
 
-            navigator.clipboard.writeText(iban).then(function() {
-                btn.textContent = 'დაკოპირდა!';
-                btn.classList.add('copied');
-                setTimeout(function() {
-                    btn.textContent = 'კოპირება';
-                    btn.classList.remove('copied');
-                }, 2000);
+            navigator.clipboard.writeText(value).then(function() {
+                showCopied(btn);
             }).catch(function() {
-                // Fallback for older browsers
                 var textarea = document.createElement('textarea');
-                textarea.value = iban;
+                textarea.value = value;
                 textarea.style.position = 'fixed';
                 textarea.style.opacity = '0';
                 document.body.appendChild(textarea);
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                btn.textContent = 'დაკოპირდა!';
-                btn.classList.add('copied');
-                setTimeout(function() {
-                    btn.textContent = 'კოპირება';
-                    btn.classList.remove('copied');
-                }, 2000);
+                showCopied(btn);
             });
+        }
+
+        function showCopied(btn) {
+            var original = btn.textContent;
+            btn.textContent = 'დაკოპირდა!';
+            btn.classList.add('copied');
+            setTimeout(function() {
+                btn.textContent = original;
+                btn.classList.remove('copied');
+            }, 2000);
         }
     </script>
 </body>
