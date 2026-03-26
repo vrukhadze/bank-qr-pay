@@ -9,7 +9,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00AEEF 0%, #0077B6 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -87,7 +87,7 @@
         }
 
         .copy-btn {
-            background: #667eea;
+            background: #00AEEF;
             color: white;
             border: none;
             border-radius: 10px;
@@ -101,7 +101,7 @@
 
         .copy-btn:active {
             transform: scale(0.95);
-            background: #5a6fd6;
+            background: #0095cc;
         }
 
         .copy-btn.copied {
@@ -109,7 +109,7 @@
         }
 
         .amount-note {
-            background: #f0f4ff;
+            background: #e6f7fd;
             border-radius: 12px;
             padding: 16px;
             text-align: center;
@@ -123,7 +123,7 @@
         }
 
         .amount-note strong {
-            color: #667eea;
+            color: #00AEEF;
         }
 
         .steps {
@@ -153,7 +153,7 @@
         .step:last-child { margin-bottom: 0; }
 
         .step-num {
-            background: #667eea;
+            background: #00AEEF;
             color: white;
             width: 22px;
             height: 22px;
@@ -180,6 +180,14 @@
             <div class="field-label">ბენეფიციარი</div>
             <div class="copyable-row">
                 <span class="copyable-value" data-copy="შპს ეიდი ტეკი">შპს ეიდი ტეკი</span>
+                <button class="copy-btn" onclick="copyText(this)">კოპირება</button>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">საიდენტიფიკაციო კოდი</div>
+            <div class="copyable-row">
+                <span class="copyable-value mono" data-copy="405289502">405289502</span>
                 <button class="copy-btn" onclick="copyText(this)">კოპირება</button>
             </div>
         </div>
